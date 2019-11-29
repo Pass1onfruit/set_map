@@ -1,0 +1,84 @@
+#include <iostream>
+#include <map> //底层是平衡的
+#include <set> // 底层是平衡二叉搜索树
+
+using namespace std;
+
+void test()
+{
+	set<int> s;
+
+	set<int>::iterator pos = s.begin();
+	s.insert(1);
+	s.insert(3);
+	s.insert(5);
+	s.insert(7);
+
+	s.erase(5);//直接删，如果找到就删掉，不知道删没删掉
+
+	auto pos = s.find(5);//这种写法可以保证找到了才删，不会出错   O(logN)//用自己的find更快
+	auto pos = std::find(s.begin(), s.end(), 5);//可以用算法的find也可以用自己的find   O(N)
+	if (pos != s.end)
+	{
+		s.erase(5);
+	}
+
+	for (auto e : s)
+	{
+		cout << e << " ";
+	}
+
+}
+
+void Test()
+{
+	map<string, string> dict;//实现字典
+	//pair对象含的first second 其实就是 key value
+	dict.insert(pair<string, sting>("A", "1"));//两个容器相互对应，可以用key找到对应的value
+	dict.insert(pair<string, sting>("B", "2"));
+	dict.insert(pair<string, sting>("C", "3"));
+	dict.insert(pair<string, sting>("D", "4"));
+	dict.insert(pair<string, sting>("E", "5"));
+	
+	string str;
+	while (cin >> str)
+	{
+		auto ret = dict.find();//用的ret不是指针了是迭代器
+		if (ret != dict.end())//不等于即找到
+		{
+			cout << str << ":" << (*ret).second << endl;//(*ret)是pair类型//second就是value
+		}
+	}
+
+	string strs[] = { "1", "2", "3", "4" };
+	map<string, int> countMap;//计数
+	for (auto& e : strs)
+	{
+		//map<string, int>::iterator = countMap.find(e);
+		auto ret = countMap.find(e);
+		if (ret != countMap.end())
+		{
+			(*ret).second++;
+			//ret->second++;
+		}
+		else
+			//countMap.insert(pair<string, int>(e, 1));//没有找到即是第一次出现//调用构造函数创建匿名对象
+			countMap.insert(make_pair(e, 1));//make_pair//效果一样//创建一个pair对象//调用的函数模板//可以自己推出k v的类型
+			//make_pair(const K & k, const V & v)
+			//{
+			//	return pair<K, V>(k, v);
+			//}
+
+		//countMap[e]++;//直接实现计数//[]用insert实现//可以插入可以修改coutMap[1] = 5把1的次数改成5
+		/*原函数
+		mapped_type& operator[] (const key_type& k)
+		{
+			return (*((thit->insert(make_pair(k, mapped_type()))).first)).second;
+		}*///                             只给key value给缺省值
+		/*V& operator[] (const K& k)
+		{
+			pair<iterator, bool>ret = insert(make_pair(k, V()));
+			return ret.first->second;
+		}*/
+	}
+}
